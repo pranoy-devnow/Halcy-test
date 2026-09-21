@@ -18,7 +18,7 @@ export function ListingCountdown({ countdownTo }: ListingCountdownProps) {
   const parts = useCountdown(countdownTo)
 
   return (
-    <div>
+    <div className="py-5">
       <p className="mb-2 text-xs text-muted-foreground">Book before</p>
       <div className="grid grid-cols-4 gap-2">
         {UNITS.map((unit) => (

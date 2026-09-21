@@ -1,9 +1,6 @@
-import { Badge } from '@/components/ui/badge'
-import { RatingMeta } from '@/features/explore/RatingMeta'
-import { placeNameFromLocation } from '@/features/explore/format'
 import type { PhotoListing } from '@/features/explore/types'
-import { cn } from '@/lib/utils'
-import { formatStayLength } from './formatStayLength'
+import { ListingHighlights } from './ListingHighlights'
+import { listingPlacement } from './formatStayLength'
 
 type ListingHeroProps = {
   listing: PhotoListing
@@ -13,10 +10,8 @@ type ListingHeroProps = {
   days: number
 }
 
-const CHIP_CLASS = 'h-7 px-3 text-[13px] font-medium tracking-[-0.02em]'
-
 /**
- * Full-bleed listing photos. Title, match, stay length, and rating sit under them.
+ * Full-bleed photos, then a centered name, details, and three-up stats.
  */
 export function ListingHero({
   listing,
@@ -26,7 +21,6 @@ export function ListingHero({
   days,
 }: ListingHeroProps) {
   const title = listing.tripName ?? listing.title
-  const stayLength = formatStayLength(nights, days)
 
   return (
     <div>
@@ -40,27 +34,16 @@ export function ListingHero({
           />
         ))}
       </div>
-      <div className="space-y-1 px-5 pt-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <h1 className="font-heading text-3xl font-normal">{title}</h1>
-          <Badge radius="full" className={CHIP_CLASS}>
-            {matchPercent}% match
-          </Badge>
-          {stayLength ? (
-            <Badge
-              radius="full"
-              variant="secondary"
-              className={cn(CHIP_CLASS, 'bg-secondary text-foreground/70')}
-            >
-              {stayLength}
-            </Badge>
-          ) : null}
-        </div>
-        <p className="text-sm text-muted-foreground">
-          {placeNameFromLocation(listing.location)}
-        </p>
-        <RatingMeta rating={listing.rating} />
+      <div className="px-5 pt-6 pb-2 text-center">
+        <h1 className="font-heading text-3xl font-normal">{title}</h1>
+        <p className="mt-2 text-sm">{listingPlacement(listing.kind, listing.location)}</p>
       </div>
+      <ListingHighlights
+        rating={listing.rating}
+        matchPercent={matchPercent}
+        nights={nights}
+        days={days}
+      />
     </div>
   )
 }

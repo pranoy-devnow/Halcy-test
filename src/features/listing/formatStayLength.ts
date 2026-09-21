@@ -1,4 +1,18 @@
 /**
+ * One-line placement under the listing title, e.g. `Stay in Lisbon, Portugal`.
+ *
+ * @param kind - Stay or experience
+ * @param location - City and country
+ */
+export function listingPlacement(
+  kind: 'stay' | 'experience',
+  location: string
+): string {
+  const noun = kind === 'experience' ? 'Experience' : 'Stay'
+  return `${noun} in ${location}`
+}
+
+/**
  * Formats a stay as `2 nights · 3 days`. Experiences with no nights are `1 day`.
  *
  * @param nights - Overnight stays; `0` hides the night part

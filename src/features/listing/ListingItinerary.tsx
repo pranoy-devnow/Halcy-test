@@ -12,7 +12,7 @@ export function ListingItinerary({ stops }: ListingItineraryProps) {
   const days = groupStopsByDay(stops)
 
   return (
-    <section className="px-5">
+    <section className="py-5">
       <h2 className="font-heading text-2xl font-normal">Itinerary</h2>
       <div className="mt-4 flex flex-col gap-6">
         {days.map((group) => (

@@ -3,6 +3,7 @@ import { getListingById } from '@/features/explore/catalog'
 import { ListingBookBar } from './ListingBookBar'
 import { ListingChrome } from './ListingChrome'
 import { ListingHero } from './ListingHero'
+import { ListingCountdown } from './ListingCountdown'
 import { ListingItinerary } from './ListingItinerary'
 import { ListingScores } from './ListingScores'
 import { getListingDetails } from './details'
@@ -33,8 +34,9 @@ export function ListingScreen() {
           nights={details.nights}
           days={details.days}
         />
-        <div className="flex flex-col gap-8 pt-6">
-          <ListingScores details={details} />
+        <div className="mx-5 divide-y divide-foreground/10">
+          <ListingScores label={details.value.label} />
+          <ListingCountdown countdownTo={details.countdownTo} />
           <ListingItinerary stops={details.itinerary} />
         </div>
       </div>

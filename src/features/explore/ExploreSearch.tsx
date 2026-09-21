@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, type RefObject } from 'react'
-import { Search, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Search } from 'lucide-react'
 import { DestinationRow } from './DestinationRow'
+import { SearchAgentPane } from './SearchAgentPane'
 import { SearchFooter } from './SearchFooter'
 import { SearchMetaRow } from './SearchMetaRow'
+import { SearchModeBar, type SearchMode } from './SearchModeBar'
 import {
   SEARCH_SUGGESTIONS,
   filterDestinations,
@@ -20,13 +21,16 @@ type ExploreSearchProps = {
  */
 export function ExploreSearch({ onClose, onSelect }: ExploreSearchProps) {
   const inputRef = useRef<HTMLInputElement>(null)
+  const [mode, setMode] = useState<SearchMode>('search')
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState<SearchDestination | null>(null)
   const matches = filterDestinations(SEARCH_SUGGESTIONS, query)
 
   useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
+    if (mode === 'search') {
+      inputRef.current?.focus()
+    }
+  }, [mode])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -57,20 +61,28 @@ export function ExploreSearch({ onClose, onSelect }: ExploreSearchProps) {
 
   return (
     <div className="absolute inset-0 z-50 flex flex-col bg-muted">
-      <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 pt-14 pb-2">
-        <WhereCard
-          inputRef={inputRef}
-          query={query}
-          matches={matches}
-          selected={selected}
-          onQueryChange={setQuery}
-          onSelect={setSelected}
-          onClose={onClose}
-        />
-        <SearchMetaRow label="When" value="Add dates" />
-        <SearchMetaRow label="Who" value="Add guests" />
+      <SearchModeBar mode={mode} onChange={setMode} onClose={onClose} />
+      <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 pt-2 pb-2">
+        {mode === 'search' ? (
+          <>
+            <WhereCard
+              inputRef={inputRef}
+              query={query}
+              matches={matches}
+              selected={selected}
+              onQueryChange={setQuery}
+              onSelect={setSelected}
+            />
+            <SearchMetaRow label="When" value="Add dates" />
+            <SearchMetaRow label="Who" value="Add guests" />
+          </>
+        ) : (
+          <SearchAgentPane />
+        )}
       </div>
-      <SearchFooter onClear={clearAll} onSearch={submit} />
+      {mode === 'search' ? (
+        <SearchFooter onClear={clearAll} onSearch={submit} />
+      ) : null}
     </div>
   )
 }
@@ -82,7 +94,6 @@ type WhereCardProps = {
   selected: SearchDestination | null
   onQueryChange: (query: string) => void
   onSelect: (destination: SearchDestination) => void
-  onClose: () => void
 }
 
 /** White Where card with destination field and suggestions. */
@@ -93,23 +104,10 @@ function WhereCard({
   selected,
   onQueryChange,
   onSelect,
-  onClose,
 }: WhereCardProps) {
   return (
     <section className="rounded-[28px] bg-background px-5 py-5 shadow-sm">
-      <div className="flex items-start justify-between gap-3">
-        <h2 className="font-heading text-3xl font-normal">Where?</h2>
-        <Button
-          type="button"
-          variant="outline"
-          size="icon-sm"
-          aria-label="Close search"
-          className="rounded-full"
-          onClick={onClose}
-        >
-          <X />
-        </Button>
-      </div>
+      <h2 className="font-heading text-3xl font-normal">Where?</h2>
       <label className="mt-4 flex h-12 items-center gap-2 rounded-full border border-border px-4">
         <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden />
         <input

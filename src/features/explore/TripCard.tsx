@@ -10,16 +10,21 @@ import type { PhotoListing } from './types'
 
 type TripCardProps = {
   listing: PhotoListing
+  /** Width override. Defaults to the Explore carousel peek width. */
+  className?: string
 }
 
 /**
  * Trip tile: photo, unique trip name, place, price, and rating. No dates or stay name.
  */
-export function TripCard({ listing }: TripCardProps) {
+export function TripCard({ listing, className }: TripCardProps) {
   const tripName = listing.tripName ?? listing.title
 
   return (
-    <Link to={listingPath(listing.id)} className={cn(EXPLORE_CARD_WIDTH_CLASS, 'block')}>
+    <Link
+      to={listingPath(listing.id)}
+      className={cn(className ?? EXPLORE_CARD_WIDTH_CLASS, 'block')}
+    >
       <Card className="w-full gap-0 py-0">
         <img
           src={listing.imageUrl}

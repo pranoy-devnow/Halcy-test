@@ -10,4 +10,5 @@ Wrap tab screens in `AppShell` as the parent route. `BottomNav` uses `TAB_PATHS`
 
 - This bar is **app** navigation. Inside a trip, keep Discover / Overview / Chat.
 - The selected pill follows the route, not local state.
-- Explore search navigates to `/find`.
+- The bar uses a near-white glass fill so it stays readable over photos.
+- It slides away while the shell scrolls and returns after a short idle.
