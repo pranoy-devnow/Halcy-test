@@ -11,6 +11,6 @@ The transcript is static (`transcript.ts`), oldest first. 18 September is a Vien
 ## Gotchas
 
 - Do not wrap the page in a card. Rows are ChatGPT-style (`avatar | sans body`), not iMessage bubbles and not serif Q/A headings.
-- Card carousels are full-bleed like Explore shelves (`px-5`, peek the next tile). They open `/listings/:id`.
+- Card carousels are full-bleed like Explore shelves (`px-5`, peek the next tile). They open `/listings/:id`. Listing back returns to this thread.
 - Today’s suggestion slider and star rating are live. They do not persist.
 - You can type in the composer. Nothing is sent or persisted.

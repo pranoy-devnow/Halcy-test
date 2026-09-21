@@ -6,7 +6,7 @@ Airbnb-style posting at `/listings/:listingId`. Opened from Explore photo cards.
 
 `ListingScreen` loads the catalog listing plus `details.ts` extras (match, value, countdown, itinerary).
 
-1. Pinned chrome — circular back, share (`navigator.share` with copy fallback), and like. Always visible over the photo.
+1. Pinned chrome — circular back, share (`navigator.share` with copy fallback), and like. Always visible over the photo. Back from a Find chat card returns to `/find`.
 2. Hero — centered experience name, placement line (`Stay in Lisbon, Portugal`), then a three-up rating / match / nights row.
 3. Light, inset hairlines separate value, countdown, and itinerary — they do not run edge to edge.
 4. Book before — square serif unit countdown (days · hrs · min · sec) toward `countdownTo`. Loops when it hits zero.

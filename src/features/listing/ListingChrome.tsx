@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { ChevronLeft, Heart, Share } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { isFromFind, listingBackLocation } from './back'
 import { shareListing } from './shareListing'
 
 type ListingChromeProps = {
@@ -16,6 +17,8 @@ const CHROME_BUTTON =
  */
 export function ListingChrome({ title }: ListingChromeProps) {
   const navigate = useNavigate()
+  const { state } = useLocation()
+  const fromFind = isFromFind(state)
   const [liked, setLiked] = useState(false)
 
   return (
@@ -24,9 +27,12 @@ export function ListingChrome({ title }: ListingChromeProps) {
         type="button"
         variant="outline"
         size="icon"
-        aria-label="Back to Explore"
+        aria-label={fromFind ? 'Back to chat' : 'Back to Explore'}
         className={CHROME_BUTTON}
-        onClick={() => navigate('/')}
+        onClick={() => {
+          const target = listingBackLocation(state)
+          navigate(target.pathname, { state: target.state })
+        }}
       >
         <ChevronLeft />
       </Button>

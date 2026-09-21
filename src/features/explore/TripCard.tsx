@@ -12,17 +12,20 @@ type TripCardProps = {
   listing: PhotoListing
   /** Width override. Defaults to the Explore carousel peek width. */
   className?: string
+  /** Router state, e.g. so listing back can return to Find. */
+  state?: object
 }
 
 /**
  * Trip tile: photo, unique trip name, place, price, and rating. No dates or stay name.
  */
-export function TripCard({ listing, className }: TripCardProps) {
+export function TripCard({ listing, className, state }: TripCardProps) {
   const tripName = listing.tripName ?? listing.title
 
   return (
     <Link
       to={listingPath(listing.id)}
+      state={state}
       className={cn(className ?? EXPLORE_CARD_WIDTH_CLASS, 'block')}
     >
       <Card className="w-full gap-0 py-0">
