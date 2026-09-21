@@ -1,0 +1,15 @@
+---
+description: Modular design and code organization standards
+alwaysApply: true
+---
+
+# Modular Design
+
+- Follow the Single Responsibility Principle: every function, class, and module does one thing. If a function needs "and" to describe it, split it.
+- Keep functions under ~40 lines and files under ~300 lines. When a file grows past this, propose a refactor into smaller modules before adding more code.
+- Depend on abstractions, not implementations. Business logic must never import UI code, and data access must be isolated behind a repository/service layer.
+- Organize by feature, not by type (e.g. `features/auth/` containing its components, hooks, and services — not global `components/`, `utils/` dumping grounds).
+- No circular dependencies. If two modules need each other, extract the shared logic into a third module.
+- Prefer composition over inheritance. Avoid deep inheritance chains (max 1 level).
+- Extract magic numbers and repeated strings into named constants at the top of the file or a shared constants module.
+- Before duplicating logic a third time, extract it into a shared utility (rule of three).

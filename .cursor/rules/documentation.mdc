@@ -1,0 +1,15 @@
+---
+description: Documentation and commenting standards
+alwaysApply: true
+---
+
+# Documentation
+
+- Write self-documenting code first: descriptive names (`getUserById`, not `getData`; `isEligibleForDiscount`, not `check`) beat comments.
+- Comments explain WHY, never WHAT. Bad: `// increment counter`. Good: `// Stripe requires idempotency keys to survive retries, so we persist before calling`.
+- Every exported/public function, class, and type gets a doc comment (JSDoc/TSDoc/docstring) covering: purpose, params, return value, and thrown errors or edge cases.
+- Document all non-obvious decisions inline: workarounds, performance trade-offs, browser quirks, and links to relevant issues/tickets.
+- Keep a README per feature module answering: what it does, how to use it, and any gotchas. Update it in the same PR as the code change — stale docs are worse than no docs.
+- When generating or modifying an API endpoint, update the API documentation (request/response shape, status codes, auth requirements) in the same change.
+- Delete commented-out code. Version control is the archive, not the codebase.
+- Mark all temporary solutions with `TODO(name): description` so they are searchable.

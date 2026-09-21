@@ -1,0 +1,15 @@
+---
+description: Error handling, validation, and resource cleanup standards
+alwaysApply: true
+---
+
+# Error Handling & Validation
+
+- Never swallow errors. Empty catch blocks are forbidden — either handle the error meaningfully, log it with context, or rethrow with added context.
+- Fail fast: validate inputs at system boundaries (API handlers, form submissions, external data parsing) before any business logic runs. Use schema validation (e.g. Zod, Pydantic) rather than manual checks.
+- Error messages must be actionable: include what failed, why, and the relevant identifiers (`Failed to load order ${orderId}: payment service timeout after 5s`), never generic messages like "Something went wrong" in logs.
+- Distinguish expected errors (validation failures, not-found) from unexpected ones (bugs, outages). Return typed results or specific error classes for expected cases; let unexpected ones surface to a central handler.
+- All async operations get explicit error handling. No unhandled promise rejections — no floating promises without `.catch` or try/catch.
+- External calls (HTTP, DB, file I/O) always have timeouts and, where appropriate, retries with backoff.
+- Never expose internal details (stack traces, SQL, file paths) in user-facing errors or API responses.
+- Clean up resources in finally blocks or use language idioms (context managers, `using`, `defer`) so failures don't leak connections or file handles.

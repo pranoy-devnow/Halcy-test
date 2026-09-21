@@ -1,0 +1,26 @@
+---
+description: Halcy visual design template (August is August Round 02 Reworked)
+alwaysApply: true
+---
+
+# Design system
+
+Follow [docs/design/README.md](docs/design/README.md) and the crops in `docs/design/references/` for every UI change.
+
+- White canvas. Do not wrap every section in a card — the hero photo is the only large card.
+- Square corners (`--radius: 0`) on cards, buttons, calendar cells, pins, images. Circular only for back/overflow icon buttons.
+- Serif (`font-heading`) for hero titles, section titles, calendar month, chat prompt. Sans for nav, meta, prices, buttons.
+- Greyscale maps. Color only in photography.
+- App chrome is a floating glass tab bar: Explore | Find | Trips | Profile. Trip shell is `back` · Discover | Overview | Chat · `overflow` (inside a trip only).
+- Hotel Search is **V2**: keep the shell; title + dates sit below; tap edit to expand nights/guests. Do not use V1’s search-field header.
+- Flight/stay carousels peek the next tile. Side fade must not navigate to Chat.
+- Overview order: date strip, then map, then Transport | Stay. Chat is a large serif prompt, not bubbles.
+
+```tsx
+// ❌ BAD — rounded, over-carded, Original / V1 patterns
+<Card className="rounded-xl"><Button className="rounded-full">Book</Button></Card>
+
+// ✅ GOOD — square, hairline, serif title on white
+<h2 className="font-heading">Flight Deals</h2>
+<Button variant="outline">Book a stay</Button>
+```

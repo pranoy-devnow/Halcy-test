@@ -1,0 +1,15 @@
+---
+description: Unit and integration testing standards
+alwaysApply: true
+---
+
+# Testing
+
+- Every new function containing business logic ships with unit tests in the same change. Bug fixes ship with a regression test that fails without the fix.
+- Test behavior, not implementation. Assert on outputs and observable effects, never on private internals — tests should survive refactors.
+- Cover the three cases for every unit: the happy path, edge cases (empty, null, boundary values, unicode, large inputs), and failure modes (invalid input, dependency errors).
+- Test names describe the scenario and expectation: `returns 404 when order does not exist`, not `test order 2`.
+- Follow Arrange–Act–Assert structure with one logical assertion focus per test. If a test needs "and" in its name, split it.
+- Mock external dependencies (network, DB, clock, randomness) at the boundary; never mock the code under test. Prefer test doubles injected via parameters over module patching.
+- Tests must be deterministic and independent: no shared mutable state, no reliance on execution order, no real timers or network.
+- Keep tests fast. If a test needs real infrastructure, mark it as an integration test and keep it out of the default unit suite.
