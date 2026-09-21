@@ -6,7 +6,7 @@ Home tab at `/`. Airbnb-style discovery IA (chips + shelves) with Halcy’s whit
 
 `ExploreScreen` renders:
 
-1. `ExploreHeader` — capsule search bar. Tap opens an in-page sheet with Search / Agent at the top (Search selected). Search shows the Where card, When / Who, and Clear all + Search. Agent is a local prompt only. Does not navigate to `/find`.
+1. `ExploreHeader` — capsule search bar. Tap opens an in-page sheet with Search / Agent at the top (Search selected). Search shows the Where card, When / Who, and Clear all + Search. Agent opens `/find`. Back from that Find session reopens this sheet.
 2. `CategoryChips` — Apple-style capsule badges: All · Weekend · beaches · bachelorette · picturesque. Local filter; empty shelves hide.
 3. Horizontal sections from `catalog.ts`: Recently viewed, Weekend trips, Unique experiences, Best deals, Flight deals, Last-minute getaways, City breaks.
 

@@ -1,7 +1,6 @@
-import { buttonVariants } from '@/components/ui/button'
 import { getListingById } from '@/features/explore/catalog'
-import { cn } from '@/lib/utils'
 import { FindAvatar } from './FindAvatar'
+import { FindDateChip } from './FindDateChip'
 import { FindStarRating } from './FindStarRating'
 import { FindSuggestionRow } from './FindSuggestionRow'
 import { FindTalkSlider } from './FindTalkSlider'
@@ -13,20 +12,15 @@ type FindTranscriptProps = {
 }
 
 /**
- * ChatGPT-style thread: dated history, then avatar rows and suggestion tiles.
+ * ChatGPT-style thread: one dated block per day for the sticky header.
  */
 export function FindTranscript({ turns }: FindTranscriptProps) {
   const days = groupFindDays(turns)
 
   return (
     <div className="flex flex-col gap-5">
-      {days.map((day, index) => (
-        <DayBlock
-          key={day.id}
-          day={day}
-          headingDate={index === 0 ? day.date : undefined}
-          nextDate={days[index + 1]?.date}
-        />
+      {days.map((day) => (
+        <DayBlock key={day.id} day={day} />
       ))}
     </div>
   )
@@ -34,57 +28,29 @@ export function FindTranscript({ turns }: FindTranscriptProps) {
 
 type DayBlockProps = {
   day: FindDay
-  headingDate?: string
-  nextDate?: string
 }
 
-/** One day’s turns, with a hairline and the next date after a completed day. */
-function DayBlock({ day, headingDate, nextDate }: DayBlockProps) {
+/** One day’s chip and turns. `data-find-day` is read by the sticky header. */
+function DayBlock({ day }: DayBlockProps) {
+  const date = day.date ?? day.id
+
   return (
-    <div className="flex flex-col gap-5">
-      {headingDate ? (
-        <>
-          <DayRule />
-          <DateChip date={headingDate} />
-        </>
-      ) : null}
+    <div className="flex flex-col gap-5" data-find-day={date}>
+      <DayRule />
+      <p className="flex justify-center">
+        <FindDateChip date={date} />
+      </p>
       {day.turns.map((turn) => (
         <MessageBlock key={turn.id} turn={turn} />
       ))}
-      {nextDate ? (
-        <>
-          <DayRule />
-          <DateChip date={nextDate} />
-        </>
-      ) : null}
     </div>
   )
 }
 
-/** Inset hairline between days, aligned with the back-button row. */
+/** Inset hairline above a day’s date chip. */
 function DayRule() {
   return (
     <div role="separator" className="mx-5 border-t border-foreground/10" />
-  )
-}
-
-type DateChipProps = {
-  date: string
-}
-
-/** Secondary-button date label. */
-function DateChip({ date }: DateChipProps) {
-  return (
-    <p className="flex justify-center">
-      <span
-        className={cn(
-          buttonVariants({ variant: 'secondary', size: 'sm' }),
-          'pointer-events-none'
-        )}
-      >
-        {date}
-      </span>
-    </p>
   )
 }
 

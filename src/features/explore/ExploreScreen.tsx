@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { EXPLORE_SECTIONS, listingsForSection } from './catalog'
 import { CategoryChips } from './CategoryChips'
 import { ExploreHeader } from './ExploreHeader'
@@ -7,16 +8,28 @@ import { ExploreListingCard } from './ExploreListingCard'
 import { ExploreSearch } from './ExploreSearch'
 import { ExploreSection } from './ExploreSection'
 import type { SearchDestination } from './destinations'
+import { isOpenSearch } from './searchSheet'
 import type { ExploreCategory } from './types'
 
 /**
  * Explore home: in-page search, category chips, and discovery shelves.
  */
 export function ExploreScreen() {
+  const location = useLocation()
+  const navigate = useNavigate()
   const [category, setCategory] = useState<ExploreCategory>('all')
   const [searchOpen, setSearchOpen] = useState(false)
   const [destination, setDestination] = useState<SearchDestination | null>(null)
   const overlayRoot = useAppShellRoot()
+
+  useEffect(() => {
+    if (!isOpenSearch(location.state)) {
+      return
+    }
+
+    setSearchOpen(true)
+    navigate('/', { replace: true, state: {} })
+  }, [location.state, navigate])
 
   const sections = EXPLORE_SECTIONS.map((section) => ({
     section,

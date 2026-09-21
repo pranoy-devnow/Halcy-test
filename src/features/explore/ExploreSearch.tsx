@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, type RefObject } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Search } from 'lucide-react'
 import { DestinationRow } from './DestinationRow'
-import { SearchAgentPane } from './SearchAgentPane'
 import { SearchFooter } from './SearchFooter'
 import { SearchMetaRow } from './SearchMetaRow'
-import { SearchModeBar, type SearchMode } from './SearchModeBar'
+import { SearchModeBar } from './SearchModeBar'
+import { FROM_SEARCH_STATE } from './searchSheet'
 import {
   SEARCH_SUGGESTIONS,
   filterDestinations,
@@ -20,17 +21,15 @@ type ExploreSearchProps = {
  * Airbnb-style search sheet: Where card, When / Who, Search.
  */
 export function ExploreSearch({ onClose, onSelect }: ExploreSearchProps) {
+  const navigate = useNavigate()
   const inputRef = useRef<HTMLInputElement>(null)
-  const [mode, setMode] = useState<SearchMode>('search')
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState<SearchDestination | null>(null)
   const matches = filterDestinations(SEARCH_SUGGESTIONS, query)
 
   useEffect(() => {
-    if (mode === 'search') {
-      inputRef.current?.focus()
-    }
-  }, [mode])
+    inputRef.current?.focus()
+  }, [])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -61,28 +60,28 @@ export function ExploreSearch({ onClose, onSelect }: ExploreSearchProps) {
 
   return (
     <div className="absolute inset-0 z-50 flex flex-col bg-muted">
-      <SearchModeBar mode={mode} onChange={setMode} onClose={onClose} />
+      <SearchModeBar
+        mode="search"
+        onChange={(next) => {
+          if (next === 'agent') {
+            navigate('/find', { state: FROM_SEARCH_STATE })
+          }
+        }}
+        onClose={onClose}
+      />
       <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 pt-2 pb-2">
-        {mode === 'search' ? (
-          <>
-            <WhereCard
-              inputRef={inputRef}
-              query={query}
-              matches={matches}
-              selected={selected}
-              onQueryChange={setQuery}
-              onSelect={setSelected}
-            />
-            <SearchMetaRow label="When" value="Add dates" />
-            <SearchMetaRow label="Who" value="Add guests" />
-          </>
-        ) : (
-          <SearchAgentPane />
-        )}
+        <WhereCard
+          inputRef={inputRef}
+          query={query}
+          matches={matches}
+          selected={selected}
+          onQueryChange={setQuery}
+          onSelect={setSelected}
+        />
+        <SearchMetaRow label="When" value="Add dates" />
+        <SearchMetaRow label="Who" value="Add guests" />
       </div>
-      {mode === 'search' ? (
-        <SearchFooter onClear={clearAll} onSearch={submit} />
-      ) : null}
+      <SearchFooter onClear={clearAll} onSearch={submit} />
     </div>
   )
 }
