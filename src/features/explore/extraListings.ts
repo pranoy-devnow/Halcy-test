@@ -85,7 +85,7 @@ export const EXTRA_LISTINGS: readonly Listing[] = [
     priceSuffix: 'total',
     rating: { score: 4.8, count: 142 },
     imageUrl:
-      'https://images.unsplash.com/photo-1596484552834-aa8ec1210412?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1560682363-760710581a67?auto=format&fit=crop&w=800&q=80',
     imageAlt: 'Edinburgh Castle on the hill',
   },
   {
