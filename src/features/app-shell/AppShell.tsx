@@ -22,7 +22,7 @@ export function AppShell({ findUnread = 0 }: AppShellProps) {
     >
       <div
         ref={scrollerRef}
-        className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain pb-24"
+        className="min-h-0 flex-1 touch-pan-y overflow-y-auto overscroll-y-contain pb-24"
       >
         <Outlet />
       </div>

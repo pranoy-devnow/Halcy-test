@@ -18,7 +18,7 @@ export function PhoneFrame({ children }: PhoneFrameProps) {
   const layoutHeight = PHONE_PREVIEW_HEIGHT_PX * scale
 
   return (
-    <div className="flex h-svh items-center justify-center overflow-hidden bg-zinc-950 p-4">
+    <div className="fixed inset-0 flex items-center justify-center overflow-hidden bg-zinc-950 p-4">
       <div
         className="relative shrink-0"
         style={{ width: layoutWidth, height: layoutHeight }}
