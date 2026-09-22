@@ -28,7 +28,7 @@ export function HomeScreen() {
   }
 
   return (
-    <div className="relative flex h-full min-h-0 flex-col">
+    <div className="relative flex h-full min-h-0 min-w-0 flex-col overflow-x-hidden">
       <Routes location={shellLocation}>
         <Route path="/listings/:listingId" element={<ListingScreen />} />
         <Route element={<AppShell findUnread={findUnread} />}>

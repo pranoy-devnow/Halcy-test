@@ -85,7 +85,7 @@ export function ExploreScreen() {
       : null
 
   return (
-    <div className="bg-background pb-8">
+    <div className="min-w-0 max-w-full overflow-x-hidden bg-background pb-8">
       {searchOverlay}
       <ExploreHeader
         searchRef={pillRef}

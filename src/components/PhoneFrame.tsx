@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { usePreventBrowserZoom } from '@/lib/usePreventBrowserZoom'
 import { usePhonePreviewScale } from '@/lib/usePhonePreviewScale'
 import {
   PHONE_PREVIEW_HEIGHT_PX,
@@ -13,6 +14,7 @@ type PhoneFrameProps = {
  * Desktop phone preview. Fixed 390×844 layout, uniformly scaled to fit the viewport.
  */
 export function PhoneFrame({ children }: PhoneFrameProps) {
+  usePreventBrowserZoom(true)
   const scale = usePhonePreviewScale()
   const layoutWidth = PHONE_PREVIEW_WIDTH_PX * scale
   const layoutHeight = PHONE_PREVIEW_HEIGHT_PX * scale
