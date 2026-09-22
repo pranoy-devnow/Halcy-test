@@ -128,7 +128,7 @@
   html,
   body,
   #root {
-    @apply m-0 h-svh min-h-svh;
+    @apply m-0 h-svh min-h-svh overflow-x-hidden;
     }
   body {
     @apply bg-background text-foreground;

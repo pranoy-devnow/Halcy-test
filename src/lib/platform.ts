@@ -1,10 +1,23 @@
 import { useEffect, useState } from 'react'
 import { Capacitor } from '@capacitor/core'
 
-const MOBILE_VIEWPORT = '(max-width: 480px)'
-
 export function isNativePlatform() {
   return Capacitor.isNativePlatform()
+}
+
+/**
+ * Whether the decorative phone chrome wraps the app.
+ * Web always uses the frame so mobile DevTools matches desktop preview.
+ * Native Capacitor builds run edge-to-edge.
+ *
+ * @param native - From {@link isNativePlatform}
+ * @param _viewportWidthPx - Unused; kept for tests and future tuning
+ */
+export function shouldShowPhoneFrame(
+  native: boolean,
+  _viewportWidthPx: number
+): boolean {
+  return !native
 }
 
 export function useShowPhoneFrame() {
@@ -13,21 +26,11 @@ export function useShowPhoneFrame() {
       return true
     }
 
-    return !isNativePlatform() && !window.matchMedia(MOBILE_VIEWPORT).matches
+    return shouldShowPhoneFrame(isNativePlatform(), window.innerWidth)
   })
 
   useEffect(() => {
-    if (isNativePlatform()) {
-      setShowFrame(false)
-      return
-    }
-
-    const mediaQuery = window.matchMedia(MOBILE_VIEWPORT)
-    const update = () => setShowFrame(!mediaQuery.matches)
-
-    update()
-    mediaQuery.addEventListener('change', update)
-    return () => mediaQuery.removeEventListener('change', update)
+    setShowFrame(shouldShowPhoneFrame(isNativePlatform(), window.innerWidth))
   }, [])
 
   return showFrame

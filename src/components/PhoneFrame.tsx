@@ -9,8 +9,8 @@ type PhoneFrameProps = {
  */
 export function PhoneFrame({ children }: PhoneFrameProps) {
   return (
-    <div className="flex h-svh items-center justify-center overflow-hidden bg-zinc-950 p-4">
-      <div className="relative aspect-[390/844] h-[min(844px,calc(100svh-2rem))]">
+    <div className="flex h-svh items-center justify-center overflow-hidden bg-zinc-950 p-2 sm:p-4">
+      <div className="relative aspect-[390/844] h-[min(844px,calc(100svh-1rem))] w-[min(100%,calc((100svh-1rem)*390/844))] max-w-[390px] sm:h-[min(844px,calc(100svh-2rem))] sm:w-auto sm:max-w-none">
         <div className="absolute inset-0 rounded-[48px] bg-black p-3 shadow-2xl ring-1 ring-white/15">
           <div
             aria-hidden
