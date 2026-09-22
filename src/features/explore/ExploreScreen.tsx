@@ -44,6 +44,25 @@ export function ExploreScreen() {
     navigate('/', { replace: true, state: {} })
   }, [location.state, navigate, search.open, search.show])
 
+  useEffect(() => {
+    if (!search.open) {
+      return
+    }
+
+    const onViewportChange = () => {
+      setOrigin(null)
+      search.hide()
+    }
+
+    window.addEventListener('resize', onViewportChange)
+    window.visualViewport?.addEventListener('resize', onViewportChange)
+
+    return () => {
+      window.removeEventListener('resize', onViewportChange)
+      window.visualViewport?.removeEventListener('resize', onViewportChange)
+    }
+  }, [search.open, search.hide])
+
   const sections = EXPLORE_SECTIONS.map((section) => ({
     section,
     listings: listingsForSection(section, category),
