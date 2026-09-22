@@ -1,22 +1,24 @@
-import { useState } from 'react'
 import {
-  TALK_SLIDER_DEFAULT,
   TALK_SLIDER_MAX,
   TALK_SLIDER_MIN,
   talkBalanceLabel,
 } from './talk-balance'
 
+type FindTalkSliderProps = {
+  value: number
+  onChange: (value: number) => void
+}
+
 /**
  * Live slider that balances how many suggestions the agent sends.
  */
-export function FindTalkSlider() {
-  const [value, setValue] = useState(TALK_SLIDER_DEFAULT)
+export function FindTalkSlider({ value, onChange }: FindTalkSliderProps) {
   const label = talkBalanceLabel(value)
 
   return (
-    <div className="mt-3 space-y-2">
+    <div className="space-y-2">
       <label className="block">
-        <span className="sr-only">Balance suggestions</span>
+        <span className="sr-only">Suggestion balance</span>
         <input
           type="range"
           min={TALK_SLIDER_MIN}
@@ -24,7 +26,7 @@ export function FindTalkSlider() {
           value={value}
           aria-valuetext={label}
           onChange={(event) => {
-            setValue(Number(event.target.value))
+            onChange(Number(event.target.value))
           }}
           className="h-8 w-full accent-foreground"
         />

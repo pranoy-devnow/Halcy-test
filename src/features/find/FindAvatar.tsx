@@ -5,7 +5,7 @@ type FindAvatarProps = {
 }
 
 /**
- * ChatGPT-style face: cloud for the agent, PM initials for you.
+ * Circular face for Find chrome: cloud for the agent, PM initials for you.
  */
 export function FindAvatar({ role }: FindAvatarProps) {
   if (role === 'user') {

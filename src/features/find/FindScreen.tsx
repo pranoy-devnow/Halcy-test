@@ -1,21 +1,27 @@
 import { useEffect, useRef, useState } from 'react'
 import { FindChrome } from './FindChrome'
 import { FindComposer } from './FindComposer'
+import { FindSettings } from './FindSettings'
 import { FindTranscript } from './FindTranscript'
-import { pickActiveDate, type DaySection } from './sticky-date'
-import { FIND_THREAD_DATE, FIND_TRANSCRIPT } from './transcript'
+import { TALK_SLIDER_DEFAULT } from './talk-balance'
+import { FIND_TONE_DEFAULT, type FindTone } from './tone'
+import { FIND_TRANSCRIPT } from './transcript'
 
 const FIND_SCROLL =
   '@container min-h-0 flex-1 overflow-y-scroll overscroll-y-contain pb-28 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
 
-const HEADER_DATE_OFFSET = 16
+type FindScreenProps = {
+  onLeave: () => void
+}
 
 /**
- * Full-screen Find chat mock. A solid white header shows the day in view.
+ * Full-screen Find chat mock. Header is back, Agent, and settings.
  */
-export function FindScreen() {
+export function FindScreen({ onLeave }: FindScreenProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
-  const [activeDate, setActiveDate] = useState(FIND_THREAD_DATE)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [talkBalance, setTalkBalance] = useState(TALK_SLIDER_DEFAULT)
+  const [tone, setTone] = useState<FindTone>(FIND_TONE_DEFAULT)
 
   useEffect(() => {
     const root = scrollRef.current
@@ -23,44 +29,36 @@ export function FindScreen() {
       return
     }
 
-    const updateDate = () => {
-      const next = pickActiveDate(readDaySections(root), root.scrollTop, HEADER_DATE_OFFSET)
-      if (next) {
-        setActiveDate(next)
-      }
-    }
-
     root.scrollTop = root.scrollHeight
-    updateDate()
-    root.addEventListener('scroll', updateDate, { passive: true })
-
-    return () => {
-      root.removeEventListener('scroll', updateDate)
-    }
-  }, [])
+  }, [settingsOpen])
 
   return (
     <div className="relative flex h-full min-h-0 flex-col bg-background">
-      <FindChrome date={activeDate} />
-      <div ref={scrollRef} className={FIND_SCROLL}>
-        <FindTranscript turns={FIND_TRANSCRIPT} />
-      </div>
-      <FindComposer />
+      <FindChrome
+        settingsOpen={settingsOpen}
+        onSettings={() => setSettingsOpen((open) => !open)}
+        onLeave={onLeave}
+      />
+      {settingsOpen ? (
+        <FindSettings
+          talkBalance={talkBalance}
+          onTalkBalanceChange={setTalkBalance}
+          tone={tone}
+          onToneChange={setTone}
+          onClose={() => setSettingsOpen(false)}
+        />
+      ) : (
+        <>
+          <div ref={scrollRef} className={FIND_SCROLL}>
+            <FindTranscript
+              turns={FIND_TRANSCRIPT}
+              talkBalance={talkBalance}
+              onTalkBalanceChange={setTalkBalance}
+            />
+          </div>
+          <FindComposer />
+        </>
+      )}
     </div>
   )
-}
-
-/**
- * Reads dated day blocks from the Find scroller.
- *
- * @param root - Overflow container that owns the thread
- */
-function readDaySections(root: HTMLElement): DaySection[] {
-  return [...root.querySelectorAll('[data-find-day]')].flatMap((node) => {
-    if (!(node instanceof HTMLElement) || !node.dataset.findDay) {
-      return []
-    }
-
-    return [{ date: node.dataset.findDay, top: node.offsetTop }]
-  })
 }

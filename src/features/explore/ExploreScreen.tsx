@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { EXPLORE_SECTIONS, listingsForSection } from './catalog'
@@ -8,8 +8,10 @@ import { ExploreListingCard } from './ExploreListingCard'
 import { ExploreSearch } from './ExploreSearch'
 import { ExploreSection } from './ExploreSection'
 import type { SearchDestination } from './destinations'
-import { isOpenSearch } from './searchSheet'
+import { relativeSearchBox, type SearchBox } from './searchExpand'
+import { isOpenSearch, isSearchPillHidden, searchReturnMode } from './searchSheet'
 import type { ExploreCategory } from './types'
+import { useSearchSheet } from './useSearchSheet'
 
 /**
  * Explore home: in-page search, category chips, and discovery shelves.
@@ -17,19 +19,30 @@ import type { ExploreCategory } from './types'
 export function ExploreScreen() {
   const location = useLocation()
   const navigate = useNavigate()
+  const pillRef = useRef<HTMLButtonElement>(null)
   const [category, setCategory] = useState<ExploreCategory>('all')
-  const [searchOpen, setSearchOpen] = useState(false)
   const [destination, setDestination] = useState<SearchDestination | null>(null)
+  const [origin, setOrigin] = useState<SearchBox | null>(null)
+  const search = useSearchSheet()
   const overlayRoot = useAppShellRoot()
+
+  const openSearch = () => {
+    setOrigin(captureSearchOrigin(pillRef.current, overlayRoot))
+    search.show()
+  }
 
   useEffect(() => {
     if (!isOpenSearch(location.state)) {
       return
     }
 
-    setSearchOpen(true)
+    if (searchReturnMode(search.open) === 'restore') {
+      setOrigin(null)
+      search.show()
+    }
+
     navigate('/', { replace: true, state: {} })
-  }, [location.state, navigate])
+  }, [location.state, navigate, search.open, search.show])
 
   const sections = EXPLORE_SECTIONS.map((section) => ({
     section,
@@ -37,13 +50,15 @@ export function ExploreScreen() {
   })).filter(({ listings }) => listings.length > 0)
 
   const searchOverlay =
-    searchOpen && overlayRoot
+    search.open && overlayRoot
       ? createPortal(
           <ExploreSearch
-            onClose={() => setSearchOpen(false)}
+            origin={origin}
+            leaving={search.leaving}
+            onClose={search.hide}
             onSelect={(selected) => {
               setDestination(selected)
-              setSearchOpen(false)
+              search.hide()
             }}
           />,
           overlayRoot
@@ -54,8 +69,10 @@ export function ExploreScreen() {
     <div className="bg-background pb-8">
       {searchOverlay}
       <ExploreHeader
+        searchRef={pillRef}
+        hidden={isSearchPillHidden(search.open, search.leaving)}
         label={destination?.title.split(',')[0] ?? 'Search'}
-        onSearch={() => setSearchOpen(true)}
+        onSearch={openSearch}
       />
       <CategoryChips value={category} onChange={setCategory} />
       <div className="flex flex-col gap-8 pt-4">
@@ -86,4 +103,21 @@ function useAppShellRoot() {
   }, [])
 
   return root
+}
+
+/**
+ * Pill box in overlay coordinates, or null when either node is missing.
+ */
+function captureSearchOrigin(
+  pill: HTMLElement | null,
+  root: HTMLElement | null
+): SearchBox | null {
+  if (!pill || !root) {
+    return null
+  }
+
+  return relativeSearchBox(
+    pill.getBoundingClientRect(),
+    root.getBoundingClientRect()
+  )
 }

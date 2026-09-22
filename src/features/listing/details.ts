@@ -1,3 +1,5 @@
+import type { PhotoListing } from '../explore/types.ts'
+import { fallbackListingDetails } from './fallbackDetails.ts'
 import type { ListingDetails } from './types'
 
 /** Detail records for every photo listing on Explore. */
@@ -205,4 +207,14 @@ export const LISTING_DETAILS: Record<string, ListingDetails> = {
  */
 export function getListingDetails(listingId: string): ListingDetails | undefined {
   return LISTING_DETAILS[listingId]
+}
+
+/**
+ * Custom extras when they exist, otherwise a card-derived posting.
+ *
+ * @param listing - Catalog stay or experience
+ * @returns Hand-written details, or a fallback built from the card
+ */
+export function resolveListingDetails(listing: PhotoListing): ListingDetails {
+  return getListingDetails(listing.id) ?? fallbackListingDetails(listing)
 }

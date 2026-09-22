@@ -4,7 +4,7 @@ Airbnb-style posting at `/listings/:listingId`. Opened from Explore photo cards.
 
 ## How to use
 
-`ListingScreen` loads the catalog listing plus `details.ts` extras (match, value, countdown, itinerary).
+`ListingScreen` loads the catalog listing plus extras (match, value, countdown, itinerary). Hand-written rows live in `details.ts`; newer Explore cards fall back to `fallbackDetails.ts`.
 
 1. Pinned chrome — circular back, share (`navigator.share` with copy fallback), and like. Always visible over the photo. Back from a Find chat card returns to `/find`.
 2. Hero — centered experience name, placement line (`Stay in Lisbon, Portugal`), then a three-up rating / match / nights row.

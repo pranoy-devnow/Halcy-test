@@ -27,6 +27,27 @@ export function isOpenSearch(state: unknown): boolean {
   return isFlag(state, 'openSearch')
 }
 
+/**
+ * How to apply a return-from-Find search reopen.
+ *
+ * @param alreadyOpen - Whether the search sheet is still mounted
+ * @returns `keep` so the expand does not replay, or `restore` after a remount
+ */
+export function searchReturnMode(alreadyOpen: boolean): 'keep' | 'restore' {
+  return alreadyOpen ? 'keep' : 'restore'
+}
+
+/**
+ * Hide the header pill only while the expanded sheet is covering it.
+ *
+ * @param open - Search overlay is mounted
+ * @param leaving - Close animation is running
+ * @returns True only while the expanded sheet should cover the pill
+ */
+export function isSearchPillHidden(open: boolean, leaving: boolean): boolean {
+  return open && !leaving
+}
+
 function isFlag(state: unknown, key: keyof FlagState): boolean {
   if (typeof state !== 'object' || state === null) {
     return false

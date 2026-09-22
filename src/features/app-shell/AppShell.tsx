@@ -13,7 +13,7 @@ export function AppShell() {
   return (
     <div
       data-app-shell
-      className="relative flex h-full min-h-0 w-full flex-col bg-background"
+      className="relative z-0 flex h-full min-h-0 w-full flex-col bg-background"
     >
       <div
         ref={scrollerRef}

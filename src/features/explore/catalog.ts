@@ -1,5 +1,6 @@
-import { listingMatchesCategory } from './listingThemes'
-import type { ExploreCategory, ExploreSection, Listing } from './types'
+import { EXTRA_LISTINGS } from './extraListings.ts'
+import { listingMatchesCategory } from './listingThemes.ts'
+import type { ExploreCategory, ExploreSection, Listing } from './types.ts'
 
 /** Static Explore listings used until a live catalog exists. */
 export const LISTINGS: readonly Listing[] = [
@@ -243,6 +244,7 @@ export const LISTINGS: readonly Listing[] = [
       'https://images.unsplash.com/photo-1509356843151-3e7d96241e11?auto=format&fit=crop&w=800&q=80',
     imageAlt: 'Gamla Stan waterfront in Stockholm',
   },
+  ...EXTRA_LISTINGS,
 ]
 
 /** Ordered Explore shelves. */
@@ -251,42 +253,91 @@ export const EXPLORE_SECTIONS: readonly ExploreSection[] = [
     id: 'viewed',
     title: 'Recently viewed',
     layout: 'place',
-    listingIds: ['viewed-lisbon', 'viewed-rome', 'viewed-cph'],
+    listingIds: [
+      'viewed-lisbon',
+      'viewed-rome',
+      'viewed-cph',
+      'viewed-madrid',
+      'viewed-paris',
+      'viewed-florence',
+    ],
   },
   {
     id: 'weekend',
     title: 'Weekend trips',
     layout: 'trip',
-    listingIds: ['weekend-porto', 'weekend-barcelona', 'weekend-vienna'],
+    listingIds: [
+      'weekend-porto',
+      'weekend-barcelona',
+      'weekend-vienna',
+      'weekend-milan',
+      'weekend-seville',
+      'weekend-edinburgh',
+    ],
   },
   {
     id: 'experiences',
     title: 'Unique experiences',
     layout: 'trip',
-    listingIds: ['exp-pasta', 'exp-fado', 'exp-kayak'],
+    listingIds: [
+      'exp-pasta',
+      'exp-fado',
+      'exp-kayak',
+      'exp-market-paris',
+      'exp-canal-ams',
+      'exp-wine-tuscany',
+    ],
   },
   {
     id: 'deals',
     title: 'Best deals',
     layout: 'trip',
-    listingIds: ['deal-athens', 'deal-prague', 'flight-waw'],
+    listingIds: [
+      'deal-athens',
+      'deal-prague',
+      'flight-waw',
+      'deal-budapest',
+      'deal-krakow',
+      'deal-valencia',
+    ],
   },
   {
     id: 'flights',
     title: 'Flight deals',
-    listingIds: ['flight-par', 'flight-lon', 'flight-waw'],
+    listingIds: [
+      'flight-par',
+      'flight-lon',
+      'flight-waw',
+      'flight-ber',
+      'flight-ams',
+      'flight-bcn',
+    ],
   },
   {
     id: 'last-minute',
     title: 'Last-minute getaways',
     layout: 'trip',
-    listingIds: ['last-berlin', 'last-amsterdam', 'viewed-cph'],
+    listingIds: [
+      'last-berlin',
+      'last-amsterdam',
+      'viewed-cph',
+      'last-madrid',
+      'last-paris',
+      'last-prague',
+    ],
   },
   {
     id: 'cities',
     title: 'City breaks',
     layout: 'trip',
-    listingIds: ['city-lisbon', 'city-stockholm', 'weekend-barcelona'],
+    listingIds: [
+      'city-lisbon',
+      'city-stockholm',
+      'weekend-barcelona',
+      'city-paris',
+      'city-london',
+      'city-milan',
+    ],
   },
 ]
 

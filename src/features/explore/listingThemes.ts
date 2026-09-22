@@ -1,4 +1,4 @@
-import type { ExploreCategory, ExploreTheme } from './types'
+import type { ExploreCategory, ExploreTheme } from './types.ts'
 
 /** Theme tags for each catalog listing id. */
 export const LISTING_THEMES: Record<string, readonly ExploreTheme[]> = {
@@ -20,6 +20,27 @@ export const LISTING_THEMES: Record<string, readonly ExploreTheme[]> = {
   'last-amsterdam': ['weekend', 'bachelorette', 'picturesque'],
   'city-lisbon': ['weekend', 'beaches', 'picturesque'],
   'city-stockholm': ['picturesque'],
+  'viewed-madrid': ['bachelorette', 'picturesque'],
+  'viewed-paris': ['bachelorette', 'picturesque'],
+  'viewed-florence': ['picturesque', 'weekend'],
+  'weekend-milan': ['weekend', 'bachelorette'],
+  'weekend-seville': ['weekend', 'beaches'],
+  'weekend-edinburgh': ['weekend', 'picturesque'],
+  'exp-market-paris': ['bachelorette'],
+  'exp-canal-ams': ['bachelorette', 'picturesque'],
+  'exp-wine-tuscany': ['picturesque', 'weekend'],
+  'deal-budapest': ['weekend', 'picturesque'],
+  'deal-krakow': ['weekend'],
+  'deal-valencia': ['weekend', 'beaches'],
+  'flight-ber': ['weekend', 'bachelorette'],
+  'flight-ams': ['bachelorette', 'picturesque'],
+  'flight-bcn': ['beaches', 'weekend'],
+  'last-madrid': ['weekend', 'bachelorette'],
+  'last-paris': ['weekend', 'bachelorette', 'picturesque'],
+  'last-prague': ['weekend', 'picturesque'],
+  'city-paris': ['bachelorette', 'picturesque'],
+  'city-london': ['bachelorette'],
+  'city-milan': ['weekend', 'picturesque'],
 }
 
 /**

@@ -1,6 +1,7 @@
-import type { ReactNode } from 'react'
+import { useRef, type ReactNode } from 'react'
 import { ChevronRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { scrollSeeMore } from './seeMoreScroll'
 
 type ExploreSectionProps = {
   title: string
@@ -11,6 +12,8 @@ type ExploreSectionProps = {
  * Serif shelf title, capsule arrow, and a peeking horizontal carousel.
  */
 export function ExploreSection({ title, children }: ExploreSectionProps) {
+  const scrollerRef = useRef<HTMLDivElement>(null)
+
   return (
     <section className="space-y-3">
       <div className="flex items-end justify-between gap-3 px-5">
@@ -21,13 +24,20 @@ export function ExploreSection({ title, children }: ExploreSectionProps) {
           variant="secondary"
           className="size-7 cursor-pointer border-transparent p-0 text-foreground/70 transition-[transform,background-color,color] duration-200 ease-out hover:bg-muted hover:text-foreground active:scale-[0.97]"
         >
-          <button type="button" aria-label={`See more ${title}`}>
+          <button
+            type="button"
+            aria-label={`See more ${title}`}
+            onClick={() => scrollSeeMore(scrollerRef.current)}
+          >
             <ChevronRight />
           </button>
         </Badge>
       </div>
       <div className="relative @container">
-        <div className="flex gap-3 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div
+          ref={scrollerRef}
+          className="flex gap-3 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
           {children}
         </div>
         <div

@@ -6,7 +6,7 @@ import { ListingHero } from './ListingHero'
 import { ListingCountdown } from './ListingCountdown'
 import { ListingItinerary } from './ListingItinerary'
 import { ListingScores } from './ListingScores'
-import { getListingDetails } from './details'
+import { resolveListingDetails } from './details'
 
 /**
  * Airbnb-style posting for a photo listing. Unknown ids return to Explore.
@@ -14,11 +14,12 @@ import { getListingDetails } from './details'
 export function ListingScreen() {
   const { listingId } = useParams<{ listingId: string }>()
   const listing = listingId ? getListingById(listingId) : undefined
-  const details = listingId ? getListingDetails(listingId) : undefined
 
-  if (!listing || listing.kind === 'flight' || !details) {
+  if (!listing || listing.kind === 'flight') {
     return <Navigate to="/" replace />
   }
+
+  const details = resolveListingDetails(listing)
 
   const photos = details.imageUrls?.length ? details.imageUrls : [listing.imageUrl]
   const title = listing.tripName ?? listing.title

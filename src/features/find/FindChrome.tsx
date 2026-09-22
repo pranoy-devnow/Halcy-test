@@ -1,44 +1,64 @@
-import { useLocation, useNavigate } from 'react-router-dom'
-import { ChevronLeft } from 'lucide-react'
+import { useLocation } from 'react-router-dom'
+import { ChevronLeft, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { isFromSearch, OPEN_SEARCH_STATE } from '@/features/explore/searchSheet'
-import { FindDateChip } from './FindDateChip'
+import { isFromSearch } from '@/features/explore/searchSheet'
+import { FindAvatar } from './FindAvatar'
+
+const CHROME_BUTTON = 'rounded-full bg-background shadow-sm'
 
 type FindChromeProps = {
-  date: string
+  settingsOpen: boolean
+  onSettings: () => void
+  onLeave: () => void
 }
 
 /**
- * Solid white Find header: back, and the date of the day in view.
+ * Solid white Find header: back, Agent identity, and settings.
  */
-export function FindChrome({ date }: FindChromeProps) {
-  const navigate = useNavigate()
+export function FindChrome({ settingsOpen, onSettings, onLeave }: FindChromeProps) {
   const { state } = useLocation()
   const fromSearch = isFromSearch(state)
+  const backLabel = settingsOpen
+    ? 'Back to chat'
+    : fromSearch
+      ? 'Back to search'
+      : 'Back to Explore'
 
   return (
-    <div className="relative z-30 shrink-0 bg-background px-4 pt-12 pb-3">
+    <div className="relative z-30 flex shrink-0 items-center gap-3 bg-background px-4 pt-12 pb-3">
       <h1 className="sr-only">Find</h1>
       <Button
         type="button"
         variant="outline"
         size="icon"
-        aria-label={fromSearch ? 'Back to search' : 'Back to Explore'}
-        className="rounded-full bg-background shadow-sm"
+        aria-label={backLabel}
+        className={CHROME_BUTTON}
         onClick={() => {
-          if (fromSearch) {
-            navigate('/', { state: OPEN_SEARCH_STATE })
+          if (settingsOpen) {
+            onSettings()
             return
           }
 
-          navigate('/')
+          onLeave()
         }}
       >
         <ChevronLeft />
       </Button>
-      <p className="pointer-events-none absolute inset-x-0 top-14 flex justify-center">
-        <FindDateChip date={date} />
-      </p>
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        <FindAvatar role="agent" />
+        <p className="truncate text-sm font-medium">Agent</p>
+      </div>
+      <Button
+        type="button"
+        variant="outline"
+        size="icon"
+        aria-label={settingsOpen ? 'Close settings' : 'Settings'}
+        aria-expanded={settingsOpen}
+        className={CHROME_BUTTON}
+        onClick={onSettings}
+      >
+        <Settings />
+      </Button>
     </div>
   )
 }
