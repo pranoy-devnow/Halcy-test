@@ -1,17 +1,21 @@
 import { NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { FlyingTabIndicator } from './FlyingTabIndicator'
+import { TabBadge } from './TabBadge'
+import { formatTabBadgeCount, tabAriaLabel } from './tab-badge'
 import { APP_TABS, TAB_PATHS, getTabIdFromPath } from './tabs'
 
 type BottomNavProps = {
   hidden?: boolean
+  /** Unread Find messages. Hidden when 0. */
+  findUnread?: number
 }
 
 /**
  * Floating glass tab bar. The flying pill follows the active route.
  * Slides off-screen while the page is scrolling.
  */
-export function BottomNav({ hidden = false }: BottomNavProps) {
+export function BottomNav({ hidden = false, findUnread = 0 }: BottomNavProps) {
   const { pathname } = useLocation()
   const activeTab = getTabIdFromPath(pathname)
   const activeIndex = Math.max(
@@ -40,13 +44,15 @@ export function BottomNav({ hidden = false }: BottomNavProps) {
         />
         {APP_TABS.map((tab) => {
           const Icon = tab.icon
+          const badgeLabel =
+            tab.id === 'find' ? formatTabBadgeCount(findUnread) : null
 
           return (
             <NavLink
               key={tab.id}
               to={TAB_PATHS[tab.id]}
               end={tab.id === 'explore'}
-              aria-label={tab.label}
+              aria-label={tabAriaLabel(tab.label, badgeLabel)}
               tabIndex={hidden ? -1 : undefined}
               className={({ isActive }) =>
                 cn(
@@ -57,7 +63,13 @@ export function BottomNav({ hidden = false }: BottomNavProps) {
             >
               {({ isActive }) => (
                 <>
-                  <Icon className="size-5" strokeWidth={isActive ? 2.25 : 1.6} />
+                  <span className="relative">
+                    <Icon
+                      className="size-5"
+                      strokeWidth={isActive ? 2.25 : 1.6}
+                    />
+                    {badgeLabel ? <TabBadge label={badgeLabel} /> : null}
+                  </span>
                   {tab.label}
                 </>
               )}

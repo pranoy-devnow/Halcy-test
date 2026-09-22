@@ -3,10 +3,15 @@ import { Outlet } from 'react-router-dom'
 import { BottomNav } from './BottomNav'
 import { useHideWhileScrolling } from './useHideWhileScrolling'
 
+type AppShellProps = {
+  /** Unread Find messages shown on the tab. */
+  findUnread?: number
+}
+
 /**
  * App layout: routed page in the scroll area, glass tab bar over the bottom.
  */
-export function AppShell() {
+export function AppShell({ findUnread = 0 }: AppShellProps) {
   const scrollerRef = useRef<HTMLDivElement>(null)
   const navHidden = useHideWhileScrolling(scrollerRef)
 
@@ -21,7 +26,7 @@ export function AppShell() {
       >
         <Outlet />
       </div>
-      <BottomNav hidden={navHidden} />
+      <BottomNav hidden={navHidden} findUnread={findUnread} />
     </div>
   )
 }

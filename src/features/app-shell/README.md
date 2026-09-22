@@ -13,3 +13,4 @@ Wrap tab screens in `AppShell` as the parent route. `BottomNav` uses `TAB_PATHS`
 - The selected pill follows the route, not local state.
 - The bar uses a near-white glass fill so it stays readable over photos.
 - It slides away while the shell scrolls and returns after a short idle.
+- Find shows a red unread badge (`2`) on the icon. Opening messages clears it for the rest of the session.

@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { AppShell } from '@/features/app-shell/AppShell'
+import { useFindUnread } from '@/features/app-shell/useFindUnread'
 import { ExploreScreen } from '@/features/explore/ExploreScreen'
 import { FindSlideOver } from '@/features/find/FindSlideOver'
 import { findUnderlayPath } from '@/features/find/underlay'
@@ -14,6 +15,7 @@ import { TripsScreen } from '@/features/trips/TripsScreen'
 export function HomeScreen() {
   const location = useLocation()
   const findOpen = location.pathname === '/find'
+  const findUnread = useFindUnread(findOpen)
   const previousPathRef = useRef(location.pathname)
 
   if (location.pathname !== '/find') {
@@ -29,7 +31,7 @@ export function HomeScreen() {
     <div className="relative flex h-full min-h-0 flex-col">
       <Routes location={shellLocation}>
         <Route path="/listings/:listingId" element={<ListingScreen />} />
-        <Route element={<AppShell />}>
+        <Route element={<AppShell findUnread={findUnread} />}>
           <Route path="/" element={<ExploreScreen />} />
           <Route path="/trips" element={<TripsScreen />} />
           <Route path="/profile" element={<ProfileScreen />} />
